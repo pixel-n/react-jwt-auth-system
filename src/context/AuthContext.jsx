@@ -1,19 +1,18 @@
 import React, { createContext, useContext, useState } from 'react';
 
-// Central store for user authentication state
 const AuthContext = createContext();
 
 export function AuthProvider({ children }) {
-  // Grab token from localStorage so login stays active on refresh
+  // Read token from localStorage on initial load
   const [token, setToken] = useState(() => localStorage.getItem('token'));
 
-  // Save JWT token to state and browser storage
+  // Save token returned from Backend API
   const login = (jwtToken) => {
     localStorage.setItem('token', jwtToken);
     setToken(jwtToken);
   };
 
-  // Remove JWT token to log user out
+  // Clear token on logout
   const logout = () => {
     localStorage.removeItem('token');
     setToken(null);
@@ -26,5 +25,4 @@ export function AuthProvider({ children }) {
   );
 }
 
-// Easy hook to access auth context anywhere
 export const useAuth = () => useContext(AuthContext);
